@@ -1,0 +1,49 @@
+name = 'dune-common'
+version = '2.6.0'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+sources = ['https://gitlab.dune-project.org/core/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['c3adbc9d2e8cdf2bbb7217698023ab443ea7c132a41442efa2e3d1b4bc086aa2']
+
+dependencies = [
+    ('CMake', '3.11.4', '', ('GCCcore','6.4.0')),
+    ('SuiteSparse', '5.1.2', '-METIS-5.1.0'),
+    ('ParMETIS', '4.0.3'),
+    ('GMP', '6.1.2', '', ('GCCcore','6.4.0')),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+extra_cmake_flags = '-DSuiteSparse_ROOT:PATH=${EBROOTSUITESPARSE} \
+ -DMETIS_ROOT:PATH=${EBROOTMETIS} \
+ -DPARMETIS_ROOT:PATH=${EBROOTPARMETIS} \
+ -DGMP_ROOT:PATH=${EBROOTGMP}'
+configopts = '-DCMAKE_BUILD_TYPE=Release ' + extra_cmake_flags
+srcdir = './%(namelower)s-v%(version)s/'
+
+sanity_check_paths = {
+    'files': [
+        'bin/dunecontrol', 
+        'include/dune/common/version.hh',
+        'lib64/libdunecommon.a'],
+    'dirs': ['bin/',('lib/','lib64/'),'include/','share/']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'
+modluafooter = """
+local cmake_flags = os.getenv("CMAKE_FLAGS") or ""
+local suitesparse_root = os.getenv("EBROOTSUITESPARSE") or ""
+local metis_root = os.getenv("EBROOTMETIS") or ""
+local parmetis_root = os.getenv("EBROOTPARMETIS") or ""
+local gmp_root = os.getenv("EBROOTGMP") or ""
+pushenv('CMAKE_FLAGS', cmake_flags .. ' -DSuiteSparse_ROOT:PATH=' .. suitesparse_root
+                                   .. ' -DMETIS_ROOT:PATH=' .. metis_root
+                                   .. ' -DPARMETIS_ROOT:PATH=' .. parmetis_root
+                                   .. ' -DGMP_ROOT:PATH=' .. gmp_root)
+"""

@@ -1,0 +1,28 @@
+name = 'dune-spgrid'
+version = '2.6.0rc1'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+repository = 'https://gitlab.dune-project.org'
+sources = [repository + '/extensions/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['6bc7bad6b5761151199fa20fde2341635a8d13640dda0ff7ab18e75823637dec']
+dependencies = [
+    ('dune-grid', '2.6.0'),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+configopts = ' -DCMAKE_BUILD_TYPE=Release -DLATEX_USABLE:BOOL=FALSE ${CMAKE_FLAGS}'
+srcdir = './%(namelower)s-v%(version)s/'
+
+sanity_check_paths = {
+    'files': ['include/dune/grid/spgrid.hh'],
+    'dirs': ['include/dune/grid/spgrid/']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'

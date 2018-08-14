@@ -1,0 +1,32 @@
+name = 'dune-fem'
+version = '2.6.0rc2'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+repository = 'https://gitlab.dune-project.org'
+sources = [repository + '/dune-fem/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['5a46572de11d17923a5aa31d7bb660b0334bff68d1ceb6d8145aff30378f3dbe']
+dependencies = [
+    ('dune-grid', '2.6.0'),
+    ('dune-alugrid', '2.6.0'),
+    ('dune-istl', '2.6.0'),
+    ('dune-localfunctions', '2.6.0'),
+    ('dune-spgrid', '2.6.0rc1'),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+configopts = ' -DCMAKE_BUILD_TYPE=Release ${CMAKE_FLAGS}'
+srcdir = './%(namelower)s-v%(version)s/'
+
+sanity_check_paths = {
+    'files': ['include/dune/fem/version.hh'],
+    'dirs': ['include/dune/fem/']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'

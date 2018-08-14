@@ -1,0 +1,23 @@
+# EasyConfig file for bundled dune modules
+
+name = 'dune'
+version = '2.6.0'
+easyblock = 'Bundle'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+dependencies = [
+    ('dune-common', version),
+    ('dune-geometry', version),
+    ('dune-localfunctions', version),
+    ('dune-grid', version),
+    ('dune-istl', version),
+    ('dune-typetree', version),
+    ('dune-uggrid', version),
+    ('dune-functions', version),
+]
+
+moduleclass = 'math'

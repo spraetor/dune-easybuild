@@ -1,0 +1,26 @@
+name = 'Alberta'
+version = '3.0.1'
+
+homepage = 'http://www.alberta-fem.de'
+description = """ALBERTA  is an Adaptive multi-Level finite element toolbox using 
+  Bisectioning refinement and Error control by Residual Techniques for scientific Applications."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+sources = ['%(namelower)s-%(version)s.tar.bz2']
+
+dependencies = []
+
+easyblock = 'ConfigureMake'
+
+configopts = [' \
+    --disable-debug --disable-graphics --disable-fem-toolbox --disable-vector-basis-functions --disable-chained-basis-functions \
+    --without-OpenGL --without-gltools --without-OpenDX --without-grape --without-silo --without-gpskca'
+]
+
+sanity_check_paths = {
+  'files': ['lib/libalberta_1d.a','lib/libalberta_2d.a','lib/libalberta_3d.a','include/alberta/alberta.h'],
+  'dirs': ['include/','lib/']
+  }
+
+moduleclass = 'math'

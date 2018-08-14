@@ -1,0 +1,37 @@
+name = 'dune-grid'
+version = '2.6.0'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+sources = ['https://gitlab.dune-project.org/core/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['042da4c0e3bfd961d2bf011edc95a325f1887e6c12581df421bfb15cae026ea6']
+dependencies = [
+    ('dune-geometry', '%(version)s'),
+    ('dune-uggrid', '%(version)s'),
+    ('Alberta', '3.0.1'),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+extra_cmake_flags = '-DALBERTA_ROOT:PATH=${EBROOTALBERTA}'
+configopts = '-DCMAKE_BUILD_TYPE=Release ${CMAKE_FLAGS} ' + extra_cmake_flags
+srcdir = './%(namelower)s-v%(version)s/' 
+
+sanity_check_paths = {
+    'files': [
+        'include/dune/grid/yaspgrid.hh',
+        'lib64/libdunegrid.a'],
+    'dirs': [('lib/','lib64/'),'include/dune/grid']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'
+modluafooter = """
+local cmake_flags = os.getenv("CMAKE_FLAGS") or ""
+local alberta_root = os.getenv("EBROOTALBERTA") or ""
+pushenv('CMAKE_FLAGS', cmake_flags .. ' -DALBERTA_ROOT:PATH=' .. alberta_root)
+"""

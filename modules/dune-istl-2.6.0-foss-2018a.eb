@@ -1,0 +1,34 @@
+name = 'dune-istl'
+version = '2.6.0'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+sources = ['https://gitlab.dune-project.org/core/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['9e3b8d82bb79a819f586ce1698f2361413f4faba1a5b31fe74d1659d0ad113be']
+dependencies = [
+    ('dune-common', '%(version)s'),
+    ('SuperLU', '5.2.1'),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+extra_cmake_flags = '-DSUPERLU_ROOT:PATH=${EBROOTSUPERLU}'
+configopts = '-DCMAKE_BUILD_TYPE=Release ${CMAKE_FLAGS} ' + extra_cmake_flags
+srcdir = './%(namelower)s-v%(version)s/'
+
+sanity_check_paths = {
+    'files': ['include/dune/istl/matrix.hh'],
+    'dirs': ['include/dune/istl/']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'
+modluafooter = """
+local cmake_flags = os.getenv("CMAKE_FLAGS") or ""
+local superlu_root = os.getenv("EBROOTSUPERLU") or ""
+pushenv('CMAKE_FLAGS', cmake_flags .. ' -DSUPERLU_ROOT:PATH=' .. superlu_root)
+"""

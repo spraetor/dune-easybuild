@@ -1,0 +1,30 @@
+name = 'dune-multidomaingrid'
+version = '2.6.0'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+repository = 'https://gitlab.dune-project.org'
+sources = [repository + '/extensions/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['eb673f98c9f38c612359c0fc4e771cd62b3fa37951678fd26f793b2d48ac4dc1']
+
+dependencies = [
+    ('dune-grid', '%(version)s'),
+    ('dune-typetree', '%(version)s'),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+configopts = ' -DCMAKE_BUILD_TYPE=Release -DLATEX_USABLE:BOOL=FALSE ${CMAKE_FLAGS}'
+srcdir = './%(namelower)s-v%(version)s/'
+
+sanity_check_paths = {
+    'files': ['include/dune/grid/multidomaingrid.hh'],
+    'dirs': ['include/dune/grid/multidomaingrid/']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'

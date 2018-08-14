@@ -1,0 +1,27 @@
+name = 'dune-localfunctions'
+version = '2.6.0'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+sources = ['https://gitlab.dune-project.org/core/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['8c6b512ee039a0db736c7ef198a7252e0b04beb22e38c0193b7db5f810a46682']
+dependencies = [
+    ('dune-geometry', '%(version)s'),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+configopts = ' -DCMAKE_BUILD_TYPE=Release ${CMAKE_FLAGS}'
+srcdir = './%(namelower)s-v%(version)s/'
+
+sanity_check_paths = {
+    'files': ['include/dune/localfunctions/lagrange.hh'],
+    'dirs': ['include/dune/localfunctions/']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'

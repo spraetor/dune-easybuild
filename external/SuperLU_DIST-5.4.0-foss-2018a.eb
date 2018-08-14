@@ -1,0 +1,29 @@
+name = 'SuperLU_DIST'
+version = '5.4.0'
+
+homepage = 'http://crd-legacy.lbl.gov/~xiaoye/SuperLU/'
+description = """SuperLU is a general purpose library for the direct solution of large, sparse, nonsymmetric systems
+ of linear equations on high performance machines. SuperLU_DIST is a parallel extension to the serial SuperLU library. 
+ It is targeted for the distributed memory parallel machines."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+toolchainopts = {'opt': True, 'pic': True}
+
+source_urls = ['http://crd-legacy.lbl.gov/~xiaoye/SuperLU/']
+sources = ["superlu_dist_%(version)s.tar.gz"]
+checksums = ['2be9be0fc6985237f13e34017147227d1d3cafa8da345121d6318a2a6ab620f9']
+
+builddependencies = [
+    ('CMake', '3.11.4', '', ('GCCcore','6.4.0')),
+    ('ParMETIS', '4.0.3'),
+]
+easyblock = 'CMakeMake'
+configopts = '-DCMAKE_BUILD_TYPE=Release -Denable_blaslib=TRUE -Denable_openmp=FALSE -Denable_combblaslib=FALSE \
+    -DTPL_PARMETIS_LIBRARIES="${EBROOTPARMETIS}/lib/libparmetis.a;${EBROOTPARMETIS}/lib/libmetis.a" \
+    -DTPL_PARMETIS_INCLUDE_DIRS=${EBROOTPARMETIS}/include'
+
+sanity_check_paths = {
+    'files': [], 
+    'dirs': ['include', ('lib', 'lib64')]
+}
+moduleclass = 'numlib'

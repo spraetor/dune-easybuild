@@ -1,0 +1,27 @@
+name = 'dune-alugrid'
+version = '2.6.0'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+sources = ['https://gitlab.dune-project.org/extensions/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['8ef4d30460bf3f711558df4eec6c28c2059c923abce8aa21251497003e1f8e31']
+dependencies = [
+    ('dune-grid', '%(version)s'),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+configopts = ' -DCMAKE_BUILD_TYPE=Release ${CMAKE_FLAGS}'
+srcdir = './%(namelower)s-v%(version)s/'
+
+sanity_check_paths = {
+    'files': ['include/dune/alugrid/grid.hh'],
+    'dirs': ['include/dune/alugrid/']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'

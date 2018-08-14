@@ -1,0 +1,40 @@
+name = 'dune-pdelab'
+version = '2.6.0-rc1'
+
+homepage = 'http://www.dune-project.org'
+description = """DUNE, the Distributed and Unified Numerics Environment is a modular toolbox for solving partial differential equations (PDEs) with grid-based methods."""
+
+toolchain = {'name': 'foss', 'version': '2018a'}
+
+repository = 'https://gitlab.dune-project.org'
+sources = [repository + '/pdelab/%(namelower)s/-/archive/v%(version)s/%(namelower)s-v%(version)s.tar.gz']
+checksums = ['631de06cd2a814be0690dd9569a8a4cce06c7562b3476e931d3d16239dccac96']
+dependencies = [
+    ('dune-grid', '2.6.0'),
+    ('dune-localfunctions', '2.6.0'),
+    ('dune-istl', '2.6.0'),
+    ('dune-typetree', '2.6.0'),
+    ('dune-functions', '2.6.0'),
+    ('dune-alugrid', '2.6.0'),
+    ('Eigen', '3.3.5', '', ('GCCcore','6.4.0')),
+]
+
+easyblock = 'CMakeMake'
+
+start_dir = '%(builddir)s'
+extra_cmake_flags = '-DEigen3_DIR:PATH=${EBROOTEIGEN}/share/eigen3/cmake/'
+configopts = ' -DCMAKE_BUILD_TYPE=Release ${CMAKE_FLAGS} ' + extra_cmake_flags
+srcdir = './%(namelower)s-v%(version)s/'
+
+sanity_check_paths = {
+    'files': ['include/dune/pdelab/gridoperator/gridoperator.hh'],
+    'dirs': ['include/dune/pdelab/gridoperator/']
+}
+
+modextrapaths = { 'DUNE_CONTROL_PATH': '.', 'CMAKE_PREFIX_PATH': '.' }
+moduleclass = 'dune'
+modluafooter = """
+local cmake_flags = os.getenv("CMAKE_FLAGS") or ""
+local eigen_root = os.getenv("EBROOTEIGEN") or ""
+pushenv('CMAKE_FLAGS', cmake_flags .. ' -DEigen3_DIR:PATH=' .. eigen_root .. '/share/eigen3/cmake/')
+"""
