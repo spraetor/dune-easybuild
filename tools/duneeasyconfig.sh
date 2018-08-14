@@ -1,9 +1,10 @@
 #!/bin/bash
 
-echo "number of arguments = $#"
-if [[ $# -ne 3 ]]; then
+if [[ $# -ne 2 ]]; then
   echo "usage: $0 dune-module (core|staging|extensions|...)"
 fi
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null && pwd )"
 
 MODULE=$1
 GROUP=$2
@@ -11,8 +12,8 @@ GROUP=$2
 TOOLCHAIN="foss"
 TOOLCHAIN_VERSION="2018a"
 
-OUT_DIR="${HOME}/easyconfigs/dune"
-mkdir -p ${OUT_DIR}/d/${MODULE}
+OUT_DIR=${DIR}/modules
+mkdir -p ${DIR}/d/${MODULE}
 
 GIT_REPO="https://gitlab.dune-project.org/${GROUP}/${MODULE}.git"
 GIT_DIR="/tmp/${USER}/dune/${GROUP}/${MODULE}"
@@ -34,7 +35,7 @@ do
   DEPENDENCIES+="  ('${DEP_NAMES[$index]}', '${DEP_VERS[$index]}'),"
 done
 
-git archive --format=tar.gz --prefix=${MODULE}-v${VERSION}/ HEAD > ${OUT_DIR}/d/${MODULE}/${MODULE}-v${VERSION}.tar.gz
+git archive --format=tar.gz --prefix=${MODULE}-v${VERSION}/ HEAD > ${DIR}/d/${MODULE}/${MODULE}-v${VERSION}.tar.gz
 
 EASYCONFIG="${OUT_DIR}/${MODULE}-${VERSION}-${TOOLCHAIN}-${TOOLCHAIN_VERSION}.eb"
 cat >${EASYCONFIG} <<EOL
@@ -69,6 +70,7 @@ EOL
 module unload git
 module load EasyBuild
 
-eb ${EASYCONFIG} --moduleclasses=dune --robot=. --inject-checksums
+cd ${DIR}
+eb ${EASYCONFIG} --moduleclasses=dune --robot=external/:modules/ --inject-checksums
 rm ${EASYCONFIG}.bak_*
 
