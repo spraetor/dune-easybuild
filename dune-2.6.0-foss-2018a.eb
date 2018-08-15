@@ -18,6 +18,11 @@ dependencies = [
     ('dune-typetree', version),
     ('dune-uggrid', version),
     ('dune-functions', version),
+    ('dune-alugrid', version),
+    ('dune-multidomaingrid', version),
+    ('dune-spgrid', '2.6.0rc1'),
+    ('dune-fem', '2.6.0rc2'),
+    ('dune-pdelab', '2.6.0-rc1'),
 ]
 
 moduleclass = 'math'
