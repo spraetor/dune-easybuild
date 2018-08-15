@@ -26,14 +26,7 @@ cd ${GIT_DIR}
 
 # parse dune-module file
 VERSION=`date +%Y.%m.%d`
-DEP_NAMES=("dune-common")
-DEP_VERS=("2.6.0")
-
-DEPENDENCIES=""
-for index in ${!DEP_NAMES[*]}
-do
-  DEPENDENCIES+="  ('${DEP_NAMES[$index]}', '${DEP_VERS[$index]}'),"
-done
+DEPENDENCIES=$(python ${DIR}/tools/parse_dune.module.py ${GIT_DIR}/dune.module)
 
 git archive --format=tar.gz --prefix=${MODULE}-v${VERSION}/ HEAD > ${DIR}/d/${MODULE}/${MODULE}-v${VERSION}.tar.gz
 
@@ -59,7 +52,7 @@ configopts = ' -DCMAKE_BUILD_TYPE=Release \${CMAKE_FLAGS}'
 srcdir = './%(namelower)s-v%(version)s/'
 
 sanity_check_paths = {
-  'files': ['lib/dunecontrol/${MODULE}/dune.module'],
+  'files': ['lib/dunecontrol/%(namelower)s/dune.module'],
   'dirs': ['include/dune/']
 }
 
@@ -71,6 +64,6 @@ module unload git
 module load EasyBuild
 
 cd ${DIR}
-eb ${EASYCONFIG} --moduleclasses=dune --robot=external/:modules/ --inject-checksums
+eb ${EASYCONFIG} --moduleclasses=dune --inject-checksums
 rm ${EASYCONFIG}.bak_*
 
