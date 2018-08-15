@@ -11,7 +11,7 @@ sources = ['%(version)s.tar.bz2']
 source_urls = [BITBUCKET_SOURCE]
 
 dependencies = [
-    ('CMake', '3.11.4'),
+    ('CMake', '3.11.1', '', ('GCCcore','6.4.0')),
 ]
 
 easyblock = 'CMakeMake'
