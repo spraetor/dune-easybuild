@@ -13,7 +13,7 @@ sources = ["superlu_%(version)s.tar.gz"]
 checksums = ['28fb66d6107ee66248d5cf508c79de03d0621852a0ddeba7301801d3d859f463']
 
 builddependencies = [
-    ('CMake', '3.11.4', '', ('GCCcore','6.4.0'))
+    ('CMake', '3.11.1', '', ('GCCcore','6.4.0'))
 ]
 easyblock = 'CMakeMake'
 configopts = '-DCMAKE_BUILD_TYPE=Release'

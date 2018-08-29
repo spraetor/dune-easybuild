@@ -10,7 +10,7 @@ sources = ['https://gitlab.dune-project.org/core/%(namelower)s/-/archive/v%(vers
 checksums = ['c3adbc9d2e8cdf2bbb7217698023ab443ea7c132a41442efa2e3d1b4bc086aa2']
 
 dependencies = [
-    ('CMake', '3.11.4', '', ('GCCcore','6.4.0')),
+    ('CMake', '3.11.1', '', ('GCCcore','6.4.0')),
     ('SuiteSparse', '5.1.2', '-METIS-5.1.0'),
     ('ParMETIS', '4.0.3'),
     ('GMP', '6.1.2', '', ('GCCcore','6.4.0')),
