@@ -41,15 +41,16 @@ Simply build the (meta) dune module that has dependencies to all other dune
 modules or build each one separately:
 
 ```bash
-eb dune-2.6.0-foss-2018a.eb --robot=external/:modules/ --moduleclasses=dune
+eb dune-2.6.0-foss-2018a.eb --robot=external/:modules/ --moduleclasses=dune [--minimal-toolchains]
 ```
 
 The option `--robot` enables dependency resolution with the parameter `--robot=DIR` 
 the `DIR` is added to the search path for EasyConfig files, and finally the options 
 `--modulesclasses=dune` adds an additional environment-module subdirectory 
-`dune` where all dune modules are stored in.
+`dune` where all dune modules are stored in. The optional parameter `--minimal-toolchains`
+instructs EasyBuild to consider subtoolchains for dependencies.
 
-## Module version
+### Module versions
 The dune modules are configured to work with the highest versions of libraries 
 shipped with EasyBuild 3.6.2 for the `foss-2018a` toolchain (based on GCC 6.4.0, 
 OpenMPI 2.1.2 and OpenBlas 0.2.20). On some clusters special version are provided
@@ -58,9 +59,8 @@ that in all dune module .eb files the correct version is written and set the
 EasyBuild search path variable, e.g.,
 
 ```bash
-EASYBUILD_ROBOT_PATHS=/projects/hpcsupport/easybuild/scs5/easyconfigs:${EASYBUILD_ROBOT_PATHS}
+EASYBUILD_ROBOT_PATHS=[CLUSTER_EASYCONFIG_DIR]:${EASYBUILD_ROBOT_PATHS}
 ```
-
 
 ## Creating new EasyConfig files
 EasyConfig files are simple text files with some python syntax. Updating a version
